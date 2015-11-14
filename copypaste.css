@@ -9,8 +9,11 @@ body{
     height: 30vw;
     width: 30vw;
     float:right;
-    left: 5vw;
-    top: 10vw;
+    left: 3vw;
+    top: 8vw;
+}
+.stats-container h1{
+    margin-bottom:2vh;
 }
 
 .label{
