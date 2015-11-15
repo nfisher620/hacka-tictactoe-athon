@@ -221,7 +221,8 @@ Game.prototype.declareWinner = function()
     this.winner = this.turn;
 
     this.updateStatsDisplay();
-    alert(this.winner + " has won the game!!!");
+   // alert(this.winner + " has won the game!!!");
+    $(".game-area").append($("<h3>").addClass("neon-tubing").html(this.winner + "won!"));
 };
 
 

@@ -39,7 +39,7 @@ p{
     height:100%;
 }
 
-h2{
+h2,h3{
     color:red;
     font-size:80px;
     float:right;
