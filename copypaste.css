@@ -44,3 +44,17 @@ body{
     background-color:transparent;
     border:none;
 }
+@media only screen and (max-width: 377px){
+    .game-area{
+        width:90vw;
+        height:40vh;
+    }
+    .stats-container{
+        width:30vw;
+        height:40vh;
+        left:-34vw;
+        position:relative;
+        display: inline-block;
+        margin-bottom: 0px;
+    }
+}
