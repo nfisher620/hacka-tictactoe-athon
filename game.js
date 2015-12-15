@@ -138,9 +138,11 @@ Game.prototype.display = function(index)
     {
         case 'X':
             square.attr('src', X_IMAGE_PATH);
+            father.play();
             break;
         case 'O':
             square.attr('src', O_IMAGE_PATH);
+            easy.play();
             break;
         default:
             square.attr('src', EMPTY_IMAGE_PATH);
@@ -219,7 +221,8 @@ Game.prototype.declareWinner = function()
     this.winner = this.turn;
 
     this.updateStatsDisplay();
-    alert(this.winner + " has won the game!!!");
+   // alert(this.winner + " has won the game!!!");
+    $(".game-area").append($("<h3>").addClass("neon-tubing").html(this.winner + "won!"));
 };
 
 
