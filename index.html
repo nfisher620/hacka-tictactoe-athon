@@ -1,8 +1,10 @@
 <!doctype html>
 <html>
 <head>
-    <title>TIC TAC YO!</title>
+    <title>TIC TAC WARS</title>
+    <meta name="viewport" content="initial-scale=1, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="mobile-style.css">
     <link href='https://fonts.googleapis.com/css?family=Playfair+Display:700italic' rel='stylesheet' type='text/css'>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="gameboard.js"></script>
@@ -11,29 +13,71 @@
     <script src="main.js"></script>
     <script src="state.js"></script>
     <script src="win-cond.js"></script>
-    <link rel="stylesheet" href="copypaste.css">
-    <script src="copypaste.js"></script>
+    <script src="player.js"></script>
 </head>
 <body>
 <div class="page-wrapper">
-    <h2 class="neon-tubing">
-        Tic-Tac-Toe
-    </h2>
+    <div id="sound-board">
+        <audio id="sfx_lightsaber">
+            <source src="sounds/lightsaber_deflect.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="sfx_tooeasy">
+            <source src="sounds/all2easy.m4r" type="audio/mpeg">
+        </audio>
+        <audio id="sfx_father">
+            <source src="sounds/father.m4r" type="audio/mpeg">
+        </audio>
+        <audio id="sfx_breath">
+            <source src="sounds/breath.m4r" type="audio/mpeg">
+        </audio>
+        <audio id="sfx_blaster">
+            <source src="sounds/blaster.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="sfx_almostthere">
+            <source src="sounds/almostthere.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="sfx_jarjar">
+            <source src="sounds/jarjar1.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="sfx_rebelscum">
+            <source src="sounds/rebelscum.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="sfx_stayontarget">
+            <source src="sounds/stayontarget.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="sfx_theyvestopped">
+            <source src="sounds/theyvestopped.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="sfx_trap">
+            <source src="sounds/trap.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="sfx_itsworking">
+            <source src="sounds/itsworking.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+    <div class="header">
+        <h2 class="neon-tubing">Tic-Tac-Wars
+        </h2>
+    </div>
     <div class="bottom-half">
         <div class="game-area">
         </div>
         <div class="stats-container">
-            <h1 class="label neon contenteditable">Games Played</h1>
-            <h1 class="games-played-val neon contenteditable">
-            </h1>
+            <div id="games-played-container">
+                <h1 class="label neon contenteditable">Games Played</h1>
+                <h1 class="games-played-val neon contenteditable">
+                </h1>
+            </div>
+            <div id="x-wins-container">
+                <h1 class="label neon contenteditable">X Wins</h1>
 
-            <h1 class="label neon contenteditable">X Wins</h1>
+                <h1 class="x-wins-val neon contenteditable"></h1>
+            </div>
+            <div id="o-wins-container">
+                <h1 class="label neon contenteditable">O Wins</h1>
 
-            <h1 class="x-wins-val neon contenteditable"></h1>
-
-            <h1 class="label neon contenteditable">O Wins</h1>
-
-            <h1 class="o-wins-val neon contenteditable"></h1>
+                <h1 class="o-wins-val neon contenteditable"></h1>
+            </div>
             <br>
             <button class="label btn-lg neon contenteditable" id="reset-game">Reset Game</button>
             <button class="label btn-lg neon contenteditable" id="restart-game">Restart Game</button>

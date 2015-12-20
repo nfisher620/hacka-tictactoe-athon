@@ -41,17 +41,21 @@ Win_Cond_Col.prototype.check = function(board,turn){
     var col_length = Math.sqrt(board.length);
     var num_cols = Math.sqrt(board.length);
     var cols_filled = 0;
-    for(var j=0;j<board.length; j+=num_cols){
-        if(board[j][turn]){
-            cols_filled++;
+    for (var i = 0; i < num_cols; i++)
+    {
+        cols_filled = 0;
+        for (var j = i; j < board.length; j += num_cols)
+        {
+            if (board[j][turn])
+            {
+                cols_filled++;
+            }
         }
-        else{
-            break;
+        if(cols_filled == col_length){
+            return true;
         }
     }
-    if(cols_filled == col_length){
-        return true;
-    }
+
     return false;
 };
 

@@ -6,10 +6,10 @@ function Game()
     this.turn = 'X';
     this.game_over = false;
     this.win_conditions = [];
-    this.x_wins = 0;
-    this.o_wins = 0;
     this.games_played = 0;
+    this.players = [];
 
+    this.game_over_sounds = [];
     this.init();
 }
 
@@ -19,6 +19,8 @@ function Game()
  */
 Game.prototype.init = function()
 {
+    this.createPlayers();
+    this.getGameOverSounds();
     this.updateStatsDisplay();
     this.enableButtons();
     this.game_board = new GameBoard();
@@ -26,6 +28,33 @@ Game.prototype.init = function()
     this.setWinConditions();
     this.changeState(new StateInit(this));
     this.run();
+};
+
+
+Game.prototype.createPlayers = function()
+{
+    this.players.push(new PlayerX());
+    this.players.push(new PlayerO());
+};
+
+
+Game.prototype.getGameOverSounds = function()
+{
+    //this.game_over_sounds.push(document.getElementById('sfx_almostthere'));
+    //this.game_over_sounds.push(document.getElementById('sfx_jarjar'));
+    this.game_over_sounds.push(document.getElementById('sfx_tooeasy'));
+    //this.game_over_sounds.push(document.getElementById('sfx_breath'));
+    this.game_over_sounds.push(document.getElementById('sfx_father'));
+    //this.game_over_sounds.push(document.getElementById('sfx_rebelscum'));
+    //this.game_over_sounds.push(document.getElementById('sfx_stayontarget'));
+    //this.game_over_sounds.push(document.getElementById('sfx_theyvestopped'));
+    this.game_over_sounds.push(document.getElementById('sfx_trap'));
+    //this.game_over_sounds.push(document.getElementById('sfx_itsworking'));
+};
+Game.prototype.playGameOverSound = function()
+{
+    var which_sound = Math.floor((Math.random() * this.game_over_sounds.length));
+    this.game_over_sounds[which_sound].play();
 };
 
 
@@ -65,7 +94,6 @@ Game.prototype.run = function(index)
 {
     this.display(index);
     this.curr_state.execute(this);
-
     // For the skeleton html
     //this.displayTest();
     //this.display(index);
@@ -78,6 +106,8 @@ Game.prototype.run = function(index)
  */
 Game.prototype.changeState = function(new_state)
 {
+    delete this.curr_state;
+
     this.curr_state = new_state;
     this.curr_state.init(this);
 };
@@ -88,16 +118,43 @@ Game.prototype.changeState = function(new_state)
  */
 Game.prototype.restartGame = function()
 {
-    this.updateStatsDisplay();
     this.enableButtons();
     this.game_board.restartBoard();
     this.constructBoardInDom();
     this.game_over = false;
     this.changeState(new StateInit(this));
     this.run();
+    this.updateStatsDisplay();
 };
 
 
+/**
+ * resetGame - Basically the constructor.
+ */
+Game.prototype.resetGame = function()
+{
+    // Call this to prevent the current game board from being clickable
+    // if it's not yet getting garbage-collected.
+    this.disableButtons();
+
+    delete this.game_board;
+    delete this.curr_state;
+    this.winner = 'O';
+    this.turn = 'X';
+    this.game_over = false;
+    this.win_conditions = [];
+    this.games_played = 0;
+    this.players = [];
+    this.game_over_sounds = [];
+
+    this.init();
+};
+
+
+/**
+ * constructBoardInDom - Uses the game board to layout the game board squares
+ *  in the page view.
+ */
 Game.prototype.constructBoardInDom = function()
 {
     var game_area = $('.game-area');
@@ -108,8 +165,10 @@ Game.prototype.constructBoardInDom = function()
     var row_size = this.game_board.size;
     var num_rows = this.game_board.size;
 
-    var div_width = 98.0 / row_size;
-    var div_height = 98.0 / num_rows;
+    // Calculate the height and width of each square as a percentage in
+    // relation to its container div.
+    var div_width = 100.0 / row_size;
+    var div_height = 100.0 / num_rows;
     // Display each square according to how it's been filled.
     for (var i = 0; i < this.game_board.board.length; i++)
     {
@@ -130,6 +189,10 @@ Game.prototype.constructBoardInDom = function()
 };
 
 
+/**
+ * Sets the image to be shown for the square picked in the game
+ * @param index - the specific square on the board to set an image to it
+ */
 Game.prototype.display = function(index)
 {
     var square = $('.empty-square[index=' + index + ']>img');
@@ -194,7 +257,14 @@ Game.prototype.squarePicked = function(button)
     console.log("Square picked: " + index);
 
     if (this.game_board.setSquare(index, this.turn))
+    {
+        if (this.turn == 'X')
+            this.players[PLAYER_X].playSound();
+        else
+            this.players[PLAYER_O].playSound();
+
         this.run(index);
+    }
 }
 
 
@@ -211,41 +281,68 @@ Game.prototype.declareWinner = function()
     this.games_played++;
 
     if (this.turn == 'X')
-        this.x_wins++;
+    {
+        this.players[PLAYER_X].stopSound();
+        this.players[PLAYER_X].winGame();
+    }
     else
-        this.o_wins++;
+    {
+        this.players[PLAYER_O].stopSound();
+        this.players[PLAYER_O].winGame();
+    }
 
     this.game_over = true;
     this.winner = this.turn;
 
     this.updateStatsDisplay();
-    alert(this.winner + " has won the game!!!");
+    $(".game-area").append($("<h3>").addClass("neon-tubing").html(this.winner + " won!"));
+    this.playGameOverSound();
 };
 
 
 /**
- * displayWinnerTest - displays the winner message in the DOM
+ * declareDraw - Changes game stats and declares a tie
  */
-Game.prototype.displayWinnerTest = function()
+Game.prototype.declareDraw = function()
 {
-    console.log(this.turn + " HAS WON THE GAME!!!!");
-    $('#player-turn').text(this.turn + " has won the game!!!");
+    this.disableButtons();
+
+    this.games_played++;
+
+    this.game_over = true;
+
+    this.updateStatsDisplay();
+    $(".game-area").append($("<h3>").addClass("neon-tubing").html("Draw"));
+    this.players[PLAYER_X].stopSound();
+    this.players[PLAYER_O].stopSound();
+    this.playGameOverSound();
 };
 
 
+/**
+ * updateStatsDisplay - updates the DOM view of the game stats
+ */
 Game.prototype.updateStatsDisplay = function()
 {
     // Grab the winner's DOM element
-    $('.x-wins-val').text(this.x_wins);
-    $('.o-wins-val').text(this.o_wins);
+    $('.x-wins-val').text(this.players[PLAYER_X].getWins());
+    $('.o-wins-val').text(this.players[PLAYER_O].getWins());
     $('.games-played-val').text(this.games_played);
 };
 
+
+/**
+ * disableButtons - removes clickablity of the game board squares
+ */
 Game.prototype.disableButtons = function()
 {
     $('.game-area').off('click', 'button');
 };
 
+
+/**
+ * enableButtons - adds clickability of the game board squares
+ */
 Game.prototype.enableButtons = function()
 {
     var the_game = this;

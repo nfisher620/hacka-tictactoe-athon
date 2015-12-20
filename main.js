@@ -1,30 +1,16 @@
 //document.addEventListener("DOMContentLoaded" , function(event)
 $(document).ready(function()
 {
-    game = new Game();
+    var game = new Game();
+    game_ref = game;
 
-    //$('.game-area').on('click', 'button', function()
-    //{
-    //    game.squarePicked(this);
-    //});
-    //
-    //$('#submit-button').on('click', function()
-    //{
-    //    game.squarePicked(this);
-    //});
-
-    $('#restart-game').on('click', function()
+    document.getElementById('restart-game').addEventListener('click', function()
     {
         game.restartGame();
     });
-    $('#reset-game').on('click', function()
+    document.getElementById('reset-game').addEventListener('click', function()
     {
-        resetGame();
+        game.resetGame();
+        console.log("Resetting game with board of size " + game_ref.game_board.board.length);
     });
 });
-
-function resetGame()
-{
-    game = null;
-    game = new Game();
-}

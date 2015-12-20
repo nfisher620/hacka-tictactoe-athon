@@ -1,0 +1,71 @@
+@media screen and (max-width: 800px)
+{
+    .page-wrapper
+    {
+        background-position-x: 40%;
+        width: 100%
+    }
+
+    .neon-tubing
+    {
+        width: 100%;
+        margin: 0 auto;
+        float: none;
+        letter-spacing: 1rem;
+    }
+
+    .bottom-half
+    {
+        display: inherit;
+    }
+    .game-area
+    {
+        display: inherit;
+        width: 70vw;
+        height: 70vw;
+        margin: 5vw auto 1vw auto;
+        float: none;
+    }
+
+    .stats-container
+    {
+        display: inherit;
+        width: 70vw;
+        margin: 6vw auto 0 auto;
+        float: none;
+    }
+
+    .stats-container>div
+    {
+        display: flex;
+
+    }
+    #games-played-container>h1:first-of-type,
+    #x-wins-container>h1:first-of-type,
+    #o-wins-container>h1:first-of-type
+    {
+        text-align: left;
+        display: inline-block;
+        float: left;
+        margin-left: 0;
+    }
+    #games-played-container>h1:last-of-type,
+    #x-wins-container>h1:last-of-type,
+    #o-wins-container>h1:last-of-type
+    {
+        text-align: left;
+        display: inline-block;
+        float: left;
+        position: relative;
+        right: 3vw;
+    }
+    .label
+    {
+        letter-spacing: 0.5rem;
+        font-size: 3.5vw;
+    }
+    .o-wins-val,.games-played-val, .x-wins-val
+    {
+        font-size: 3.5vw;
+    }
+}

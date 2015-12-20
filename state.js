@@ -41,6 +41,8 @@ StateTurnX.prototype.execute = function(game)
     this.has_won = game.checkWinConditions();
     if (this.has_won)
         game.changeState(new StateGameOver(game));
+    else if (game.game_board.isFull())
+        game.changeState(new StateGameOverDraw(game));
     else
         game.changeState(new StateTurnO(game));
 };
@@ -62,6 +64,8 @@ StateTurnO.prototype.execute = function(game)
     this.has_won = game.checkWinConditions();
     if (this.has_won)
         game.changeState(new StateGameOver(game));
+    else if (game.game_board.isFull())
+        game.changeState(new StateGameOverDraw(game));
     else
         game.changeState(new StateTurnX(game));
 };
@@ -78,5 +82,20 @@ StateGameOver.prototype.init = function(game)
     game.declareWinner();
 };
 StateGameOver.prototype.execute = function(game)
+{
+};
+
+
+function StateGameOverDraw(game)
+{
+    State.call(this, game);
+}
+StateGameOverDraw.prototype = new State();
+StateGameOverDraw.prototype.constructor = StateGameOverDraw;
+StateGameOverDraw.prototype.init = function(game)
+{
+    game.declareDraw();
+};
+StateGameOverDraw.prototype.execute = function(game)
 {
 };

@@ -1,6 +1,3 @@
-/**
- * Created by mihirshah on 11/4/15.
- */
 var gamesPlayed=0;
 var xWins=0;
 var oWins=0;
@@ -18,7 +15,6 @@ $(document).ready(function(){
         oWins=0;
         displayStats();
     });
-
 });
 function displayStats(){
 
@@ -26,6 +22,9 @@ function displayStats(){
     $('.x-wins-val').text(xWins).css("text-align","center");
     $('.o-wins-val').text(oWins).css("text-align","center");
 }
+
+
+
 
 
 
